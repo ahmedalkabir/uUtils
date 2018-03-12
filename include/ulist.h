@@ -2,17 +2,19 @@
 // Created by Ahmed Alkabir on 9/27/2017.
 //
 
-#ifndef UMANGA_LIST_H
-#define UMANGA_LIST_H
+#pragma once
 
 #include <stdlib.h>
 
 /** Structure of Linked List Elements
+ *
+ *  I would use Doubly-linked list
  * */
 
 typedef struct uListElmt_{
-    void *data;
-    struct uListElmt_ *next;
+    void                *data;
+    struct uListElemt_  *prev;
+    struct uListElemt_  *next;
 } uListElement;
 
 /**
@@ -33,26 +35,25 @@ typedef struct uList_{
 
 /** Interface of Linked lList
  * */
-void list_init(uList *list, void(*destory)(void *data));
+void ulist_init(uList *list, void(*destory)(void *data));
 
-void list_destroy(uList *list);
+void ulist_destroy(uList *list);
 
-int list_ins_next(uList *list, uListElement *element, const void *data);
+int ulist_ins_next(uList *list, uListElement *element, const void *data);
 
-int list_rem_next(uList *list, uListElement *element, void **data);
+int ulist_rem_next(uList *list, uListElement *element, void **data);
 
-#define list_size(list) ((list)->size)
+#define ulist_size(list) ((list)->size)
 
-#define list_head(list) ((list)->head)
+#define ulist_head(list) ((list)->head)
 
-#define list_tail(list) ((list)->tail)
+#define ulist_tail(list) ((list)->tail)
 
-#define list_is_head(list, element) ((element) == (list)->head ? 1 : 0)
+#define ulist_is_head(list, element) ((element) == (list)->head ? 1 : 0)
 
-#define list_is_tail(element)   ((element)->next == NULL ? 1 : 0)
+#define ulist_is_tail(element)   ((element)->next == NULL ? 1 : 0)
 
-#define list_data(element)  ((element)->data)
+#define ulist_data(element)  ((element)->data)
 
-#define list_next(element)  ((element)->next)
+#define ulist_next(element)  ((element)->next)
 
-#endif //UMANGA_LIST_H

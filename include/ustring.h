@@ -2,8 +2,7 @@
 // Created by korab on 9/28/2017.
 //
 
-#ifndef UMANGA_USTRING_H
-#define UMANGA_USTRING_H
+#pragma once
 
 #include <stdlib.h>
 #include <string.h>
@@ -41,4 +40,4 @@ struct ustring_{
     void (*trim_character)(uString *, const char);
 };
 
-#endif //UMANGA_USTRING_H
+

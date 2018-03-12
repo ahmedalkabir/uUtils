@@ -2,8 +2,7 @@
 // Created by korab on 9/28/2017.
 //
 
-#ifndef UMANGA_UVECTOR_H
-#define UMANGA_UVECTOR_H
+#pragma once
 
 #include <stdint.h>
 #include <stdlib.h>

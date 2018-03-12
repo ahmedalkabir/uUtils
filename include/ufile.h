@@ -11,8 +11,7 @@
 #include <windows.h>
 #include <sys/types.h>
 
-#ifndef UMANGA_UFILE_H
-#define UMANGA_UFILE_H
+#pragma once
 
 // Check File if exist
 extern bool ufile_exist(const char *file_name);

@@ -7,17 +7,14 @@
 
 #include <ulist.h>
 
-void list_init(uList *list, void (*destroy)(void *data)){
-
+void ulist_init(uList *list, void (*destroy)(void *data)){
     list->size  = 0;
     list->destroy = destroy;
     list->head = NULL;
     list->tail = NULL;
-
-    return;
 }
 
-void list_destroy(uList *list){
+void ulist_destroy(uList *list){
     void *data;
 
     while(list_size(list) > 0){
@@ -27,11 +24,9 @@ void list_destroy(uList *list){
     }
 
     memset(list, 0, sizeof(uList));
-
-    return;
 }
 
-int list_ins_next(uList *list, uListElement *element, const void *data){
+int ulist_ins_next(uList *list, uListElement *element, const void *data){
 
     uListElement *new_element;
 
@@ -64,7 +59,7 @@ int list_ins_next(uList *list, uListElement *element, const void *data){
     return 0;
 }
 
-int list_rem_next(uList *list, uListElement *element , void **data){
+int ulist_rem_next(uList *list, uListElement *element , void **data){
     uListElement *old_element;
 
     if(list_size(list) == 0)
