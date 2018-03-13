@@ -13,8 +13,8 @@
 
 typedef struct uListElmt_{
     void                *data;
-    struct uListElemt_  *prev;
-    struct uListElemt_  *next;
+    struct uListElmt_  *prev;
+    struct uListElmt_  *next;
 } uListElement;
 
 /**
@@ -37,11 +37,15 @@ typedef struct uList_{
  * */
 void ulist_init(uList *list, void(*destory)(void *data));
 
+uList *ulist_init_(void (*destroy)(void *data));
+
 void ulist_destroy(uList *list);
 
 int ulist_ins_next(uList *list, uListElement *element, const void *data);
 
-int ulist_rem_next(uList *list, uListElement *element, void **data);
+int ulist_ins_prev(uList *list, uListElement *element, const void *data);
+
+int ulist_remove(uList *list, uListElement *element, void **data);
 
 #define ulist_size(list) ((list)->size)
 
@@ -49,11 +53,13 @@ int ulist_rem_next(uList *list, uListElement *element, void **data);
 
 #define ulist_tail(list) ((list)->tail)
 
-#define ulist_is_head(list, element) ((element) == (list)->head ? 1 : 0)
+#define ulist_is_head(element) ((element)->prev == NULL ? 1 : 0)
 
 #define ulist_is_tail(element)   ((element)->next == NULL ? 1 : 0)
 
 #define ulist_data(element)  ((element)->data)
 
 #define ulist_next(element)  ((element)->next)
+
+#define ulist_prev(element)  ((element)->prev)
 

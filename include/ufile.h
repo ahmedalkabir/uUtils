@@ -21,4 +21,3 @@ extern bool ufile_mkdir(const char *dirpath, mode_t mode, bool recursive);
 extern void *ufile_read(FILE *fp, size_t *nbytes);
 extern ssize_t ufile_save(const char *filepath, const void *buf, size_t size,bool append);
 
-#endif //UMANGA_UFILE_H

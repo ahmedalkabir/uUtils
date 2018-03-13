@@ -70,4 +70,3 @@ struct uvector_obj_{
     void *data;
     int index;
 };
-#endif //UMANGA_UVECTOR_H

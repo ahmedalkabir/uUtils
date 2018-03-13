@@ -14,11 +14,20 @@ void ulist_init(uList *list, void (*destroy)(void *data)){
     list->tail = NULL;
 }
 
+uList *ulist_init_(void (*destroy)(void *data)){
+    uList *list = (uList *)malloc(sizeof(uList));
+    list->size  = 0;
+    list->destroy = destroy;
+    list->head = NULL;
+    list->tail = NULL;
+    return list;
+}
+
 void ulist_destroy(uList *list){
     void *data;
 
-    while(list_size(list) > 0){
-        if(list_rem_next(list,NULL,(void **)&data) == 0 && list->destroy != NULL){
+    while(ulist_size(list) > 0){
+        if(ulist_remove(list,ulist_tail(list), (void **)&data) == 0 && list->destroy != NULL){
             list->destroy(data);
         }
     }
@@ -30,69 +39,105 @@ int ulist_ins_next(uList *list, uListElement *element, const void *data){
 
     uListElement *new_element;
 
+    if(element == NULL && ulist_size(list) != 0)
+        return -1;
+
     if((new_element = (uListElement *)malloc(sizeof(uListElement))) == NULL)
         return -1;
 
+    // insert the new element into the list
     new_element->data = (void *)data;
 
-    if(element == NULL){
-        /** Handle insertion at the head of the list
-         * */
-        if(list_size(list) == 0)
-            list->tail = new_element;
-
-        new_element->next = list->head;
-        list->head =  new_element;
+    if(ulist_size(list) == 0){
+        // handle insertion when the  list is empty.
+        list->head = new_element;
+        list->head->prev = NULL;
+        list->head->next = NULL;
+        list->tail = new_element;
     }else{
-        /** Handle insertion somewhere other than at the head
-         * */
+        new_element->next = element->next;
+        new_element->prev = element;
+
         if(element->next == NULL)
             list->tail = new_element;
-        new_element->next = element->next;
+        else
+            element->next->prev = new_element;
+
         element->next = new_element;
     }
 
-
-    /// increase size of list
     list->size++;
 
     return 0;
 }
 
-int ulist_rem_next(uList *list, uListElement *element , void **data){
-    uListElement *old_element;
+int ulist_ins_prev(uList *list, uListElement *element, const void *data){
+    uListElement *new_element;
 
-    if(list_size(list) == 0)
+    // don not allow a null element unless the list is empty
+    if(element == NULL && ulist_size(list) != 0)
         return -1;
 
-    if(element == NULL){
-        *data = list->head->data;
-        old_element = list->head;
-        list->head = list->head->next;
+    // allocate storage to be managed by the abstract datatype.
+    if((new_element = (uListElement *)malloc(sizeof(uListElement))) == NULL)
+        return -1;
 
-        if(list_size(list) == 1)
-            list->tail = NULL;
+    // insert the new element into the list.
+    new_element->data = (void *)data;
+    if(ulist_size(list) == 0){
+        // handle insertion when the list is empty.
+        list->head = new_element;
+        list->head->prev = NULL;
+        list->head->next = NULL;
+        list->tail = new_element;
     }else{
-        /** handle removal from somewhere other than the head
-         * */
-        if(element->next == NULL)
-            return -1;
-        *data = element->next->data;
-        old_element = element->next;
-        element->next = element->next->next;
+        // handle insertion when the list is not empty
+        new_element->next = element;
+        new_element->prev = element->prev;
 
-        if(element->next == NULL)
-            list->tail = element;
+        if(element->prev == NULL)
+            list->head = new_element;
+        else
+            element->prev->next = new_element;
+
+        element->prev = new_element;
     }
 
-    /** Free the storage allocated by the abstract data type.
-     * */
-    free(old_element);
+    list->size++;
 
-    /**
-     *  decrease the size of the list
-     * */
+    return 0;
+}
+
+int ulist_remove(uList *list, uListElement *element, void **data){
+    // do not allow a null element or removal from an empty list.
+    if(element == NULL || ulist_size(list) == 0)
+        return -1;
+
+    // remove the element from the list.
+    *data = element->data;
+
+    if(element == list->head){
+        list->head = element->next;
+
+        if(list->head == NULL)
+            list->tail = NULL;
+        else
+            element->next->prev = NULL;
+    }else{
+        // handle removal from other than the head of the list.
+
+        element->prev->next = element->next;
+
+        if(element->next == NULL)
+            list->tail = element->prev;
+        else
+            element->next->prev = element->prev;
+    }
+
+    free(element);
+
     list->size--;
 
     return 0;
 }
+
