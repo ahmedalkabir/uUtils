@@ -35,9 +35,7 @@ typedef struct uList_{
 
 /** Interface of Linked lList
  * */
-void ulist_init(uList *list, void(*destory)(void *data));
-
-uList *ulist_init_(void (*destroy)(void *data));
+uList *ulist_init(void (*destroy)(void *data));
 
 void ulist_destroy(uList *list);
 

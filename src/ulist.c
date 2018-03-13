@@ -7,14 +7,7 @@
 
 #include <ulist.h>
 
-void ulist_init(uList *list, void (*destroy)(void *data)){
-    list->size  = 0;
-    list->destroy = destroy;
-    list->head = NULL;
-    list->tail = NULL;
-}
-
-uList *ulist_init_(void (*destroy)(void *data)){
+uList *ulist_init(void (*destroy)(void *data)){
     uList *list = (uList *)malloc(sizeof(uList));
     list->size  = 0;
     list->destroy = destroy;
